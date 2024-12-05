@@ -22,7 +22,7 @@ allprojects {
     } else {
         versionSuffix = "-${gitShortRev()}-SNAPSHOT"
     }
-    ext.ARTIFACT_VERSION = versionName + versionSuffix
+    ext.ARTIFACT_VERSION = "2.3.0.1-241205-SNAPSHOT"
     ext.TEST_HOST_APP_APPLICATION_ID = 'com.tencent.shadow.test.hostapp'
     ext.SAMPLE_HOST_APP_APPLICATION_ID = 'com.tencent.shadow.sample.host'
     repositories {
