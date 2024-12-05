@@ -75,15 +75,22 @@ preBuild.dependsOn(":sample-host-lib:jarDebugPackage")
 
 def createDuplicateApkTask(buildType) {
     def apkDir = file("${getBuildDir()}/outputs/apk/plugin/$buildType")
+    def apkDir1 = file("${getBuildDir()}/intermediates/apk/plugin/$buildType")
 
     return tasks.create("duplicatePlugin${buildType.capitalize()}ApkTask", Copy) {
         group = 'build'
         description = "复制一个sample-app-plugin-${buildType}.apk用于测试目的"
+        // 2个输入转输出，因为apk目录变化，导致只有1个目录有文件
         from(apkDir) {
             include("sample-app-plugin-${buildType}.apk")
             rename { "sample-app-plugin-${buildType}2.apk" }
         }
+        from(apkDir1) {
+            include("sample-app-plugin-${buildType}.apk")
+            rename { "sample-app-plugin-${buildType}2.apk" }
+        }
         into(apkDir)
+        into(apkDir1)
 
     }.dependsOn(":sample-app:assemblePlugin${buildType.capitalize()}")
 }

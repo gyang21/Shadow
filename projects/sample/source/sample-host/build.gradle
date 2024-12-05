@@ -56,8 +56,15 @@ def createCopyTask(projectName, buildType, name, apkName, inputFile, taskName) {
     return tasks.create("copy${buildType.capitalize()}${name.capitalize()}Task", Copy) {
         group = 'build'
         description = "复制${name}到assets中."
-        from(inputFile.getParent()) {
-            include(inputFile.name)
+
+        def inputNewFile = inputFile
+        // 因为apk目录变化，需提前检查文件存在
+        if (!inputNewFile.exists()) {
+            inputNewFile = file(inputFile.getAbsolutePath().replace("outputs", "intermediates"))
+        }
+
+        from(inputNewFile.getParent()) {
+            include(inputNewFile.name)
             rename { outputFile.name }
         }
         into(outputFile.getParent())
